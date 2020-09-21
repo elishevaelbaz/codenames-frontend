@@ -1,5 +1,11 @@
+let socket;
+
 function createGameRoomWebsocketConnection(roomCode) {
     
+    // if there is already an open connection, close it before opening new ws connection
+    // (for example if in a game, but create or join a new/diff game, we don't still want to receive from the old game if others are still playing)
+    console.log("socket", socket)
+    socket && socket.close()
     // Creates the new WebSocket connection.
     socket = new WebSocket('ws://localhost:3000/cable');
      // When the connection is first created, this code runs subscribing the client to a specific chatroom stream in the ChatRoomChannel.
@@ -18,7 +24,7 @@ function createGameRoomWebsocketConnection(roomCode) {
     
     // When the connection is closed, this code will run.
     socket.onclose = function(event) {
-         console.log('WebSocket is closed.');
+        console.log('Existing WebSocket has disconnected.');
     };
     // When a message is received through the websocket, this code will run.
     socket.onmessage = function(event) {            
@@ -32,7 +38,8 @@ function createGameRoomWebsocketConnection(roomCode) {
         console.log("FROM RAILS: ", msg);
         
         // Renders any newly created messages onto the page.
-        if (msg.message.game_word) {
+        // `msg.message &&` removes TypeError Cannot read property 'game_word' of undefined
+        if (msg.message && msg.message.game_word) {
             renderGameWord(msg.message.game_word, msg.message.game)
             // updateGameWord(msg.message, endTurnButton.dataset.id)
             console.log("THIS IS RENDERING THE NEW GAME WORD", msg.message.game_word)
@@ -43,7 +50,7 @@ function createGameRoomWebsocketConnection(roomCode) {
         }
 
         // endTurnButton is clicked
-        else if (msg.message.room_code){
+        else if (msg.message && msg.message.room_code){
             // change the turn on the DOM
             if (msg.message.orange_turn){
                 teamColorTurn.textContent = "orange"
@@ -56,8 +63,15 @@ function createGameRoomWebsocketConnection(roomCode) {
         }
 
         // newGameButton is clicked
-        else if (msg.message.game_words) {
+        else if (msg.message && msg.message.type === "new round") {
+            console.log(msg.message)
+            console.log(msg.message.game)
             console.log("the start new game button was clicked", msg.message)
+            
+            displayGame(msg.message.game)
+            //close the modal
+            modal.style.display = "none"
+
         }
         
     };
@@ -88,9 +102,7 @@ function renderGameWord(gameWord, gameObj) {
 
         }
         displayAllColors()
-        modal.style.display = "block"
-        const winnerTag = document.querySelector("#winner-tag")
-        winnerTag.textContent = `${winner} Team Wins`
+        displayModal(gameObj, winner)
     }
 
     // if ()

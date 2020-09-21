@@ -49,7 +49,7 @@ function deleteRound(gameId) {
     })
         .then(r => r.text())
         .then(deleteData => {
-          console.log("deleteData", deleteData)
+          // console.log("deleteData", deleteData)
           // createNewRound(currentRoomCode)
         })
 }
@@ -62,15 +62,12 @@ function createNewRound(currentRoomCode) {
       },
       body: JSON.stringify({room_code: currentRoomCode}),
   })
-      .then(response => response.json())
-      .then(newGameData => {
-          displayGame(newGameData)
-          // wordsLeftNumber.textContent = newGameData.orange_words_left
-          teamColorTurn.textContent = "orange"
-          spymasterViewButton.textContent = "SPYMASTER VIEW: OFF"
-          createGameRoomWebsocketConnection(currentRoomCode)
-          
-          // console.log("creating new round--------------")
+  // don't need the .thens because websockets are taking care of the display changes
+      // .then(response => response.json())
+      // .then(newGameData => {
+          // displayGame(newGameData)
+          // teamColorTurn.textContent = "orange"
+          // spymasterViewButton.textContent = "SPYMASTER VIEW: OFF"
           // createGameRoomWebsocketConnection(currentRoomCode)
-      })
+      // })
 }
