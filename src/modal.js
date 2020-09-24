@@ -9,14 +9,14 @@ newGameButton.addEventListener("click", (e) => {
     // createGameRoomWebsocketConnection(currentRoomCode)
 })
 
-function gameOver(gameObj, winner) {
+// function gameOver(gameObj, winner) {
 
     // display all the answers - show the spymaster view
 
     // window.setTimeout(displayAllColors, 300);
     
     // window.setTimeout(displayModal, 700, gameObj, winner);    
-}
+// }
 
 function displayModal(gameObj, winner){
     // once the game is over (and modal pops up), the game is destroyed

@@ -82,12 +82,9 @@ function createGameRoomWebsocketConnection(roomCode) {
     };
 }
 
-
 function renderGameWord(gameWord, gameObj) {
     let wordButton = document.getElementById(`${gameWord.id}`)
     wordButton.className = gameWord.category;
-
-    // window.setTimeout(displayPlayer2Modal, 750, gameWord, gameObj);    
 
     if ((gameWord.category === "bomb" || gameObj.orange_words_left == 0 || gameObj.purple_words_left == 0) && (modal.style.display === "none") ) {
 
@@ -104,23 +101,6 @@ function renderGameWord(gameWord, gameObj) {
         displayAllColors()
         displayModal(gameObj, winner)
     }
-
-    // if ()
-
-    // when one person clicks start new game, modal.style.display should = "none"
-    // call : 
-    // getGameByRoomCode(roomCode)
-        // .then(gameObj => {
-        //     if (gameObj){
-        //       displayGame(gameObj) 
-        //       gameDataBar.style.display = "flex"
-        //       bottomButtons.style.display = "flex"
-        //       createGameRoomWebsocketConnection(roomCode)
-        //     }
-        //     else{
-        //         displayErrors()
-        //     }
-        //   })
 }
 
 function renderGame(gameObj) {
@@ -128,7 +108,6 @@ function renderGame(gameObj) {
         teamColorTurn.textContent = "orange"
         wordsLeftNumberOrange.textContent = gameObj.orange_words_left 
         endTurnButton.dataset.turn = "orange";
- 
     } else {
         teamColorTurn.textContent = "purple"
         wordsLeftNumberPurple.textContent = gameObj.purple_words_left 
